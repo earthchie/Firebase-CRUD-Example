@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firebase - Login</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="container">
+        <br>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">Firebase</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="login.html">หน้าสมาชิก</a></li>
+                        <li><a href="create.html">เขียนบทความใหม่</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <article>
+            <h1 data-bind="title">รอสักครู่...</h1>
+
+            <small>
+                โดย <span data-bind="author"></span> | 
+                ปรับปรุงเนื้อหาล่าสุด <span data-bind="updatedAt-formatted"></span> | 
+                เข้าชมแล้ว <span data-bind="views">0</span> ครั้ง 
+            </small>
+
+            <hr>
+
+            <div data-bind="content"></div>
+            
+            <hr>
+            <div class="text-right">
+                <button id="delete" class="btn btn-lg btn-danger">ลบทิ้ง</button>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <a href="" id="update" class="btn btn-lg btn-primary">แก้ไข</a>
+            </div>
+
+        </article>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+    <script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
+
+    <script>
+        // แก้ firebase config ตรงนี้
+        var config = {
+            apiKey: "AIzaSyBqxEP00IKEgI163DnTRluzxIHwesx_QLQ",
+            authDomain: "example-crud-blog-d4912.firebaseapp.com",
+            databaseURL: "https://example-crud-blog-d4912.firebaseio.com",
+            storageBucket: "",
+        };
+        firebase.initializeApp(config);
+
+        /////////////////////////////////////
+
+        /****************\
+         * ดึงเนื้อหามาแสดง *
+        \****************/
+
+        var entry_id = $_GET('id');
+
+        if (entry_id) {
+            var added_views = false;
+            var Entry = firebase.database().ref('Entry').child(entry_id);
+
+            Entry.on('value', function (r) {
+                var entry = r.val();
+
+                if (entry) {
+
+                    entry['updatedAt-formatted'] = datetimeFormat(entry.updatedAt);
+
+                    $('[data-bind]').each(function () {
+                        $(this).html(entry[$(this).data('bind')]);
+                    });
+
+                    if (!added_views) {
+                        added_views = true;
+                        Entry.transaction(function (entry) {
+                            entry = entry || {}
+                            entry.views = (entry.views || 0) + 1;
+                            return entry;
+                        });
+                    }
+                } else {
+                    window.location.href = 'index.html';
+                }
+            });
+            
+            // ปุ่มแก้ไข
+            $('#update').attr('href','update.html?id='+entry_id);
+            
+            // ปุ่มลบ
+            $('#delete').click(function(){
+                if(confirm('ยืนยันที่จะลบ?')){
+                    Entry.remove(); // ลบเสร็จจะ trigger Entry.on('value') ทันที
+                }
+            });
+        } else {
+            alert('ไม่พบ entry id');
+            window.location.href = 'index.html';
+        }
+
+        /*************\
+         * Utilities *
+        \*************/
+
+        function $_GET(key) {
+            var queries = window.location.href.split('?').pop().split('&');
+            var params = {};
+            queries.map(function (query) {
+                var set = query.split('=');
+                params[set[0]] = set[1];
+            });
+
+            if (key) {
+                return params[key] || null;
+            } else {
+                return params;
+            }
+
+        }
+
+        function pad2Digit(num) {
+            return ('0' + num.toString()).slice(-2);
+        }
+
+        function datetimeFormat(timestamp) {
+            var dateObj = new Date(timestamp);
+            var th_month = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค', 'พ.ย.', 'ธ.ค.'];
+            return dateObj.getDate() + ' ' + th_month[dateObj.getMonth()] + ' ' + pad2Digit(dateObj.getFullYear() + 543) + ' ' + pad2Digit(dateObj.getHours()) + ':' + pad2Digit(dateObj.getMinutes()) + ' น.';
+        }
+    </script>
+
+
+</body>
+
+</html>

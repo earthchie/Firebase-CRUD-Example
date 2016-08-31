@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firebase - Login</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="container">
+        <br>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">Firebase</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="login.html">หน้าสมาชิก</a></li>
+                        <li><a href="create.html">เขียนบทความใหม่</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <h1>Firebase - Login</h1>
+
+        <div id="firebaseui-auth-container"></div>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+    <!-- plugins ช่วยทำระบบสมาชิก -->
+    <script src="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
+    <!-- End - plugins ช่วยทำระบบสมาชิก -->
+
+    <script>
+        // แก้ firebase config ตรงนี้
+        var config = {
+            apiKey: "AIzaSyBqxEP00IKEgI163DnTRluzxIHwesx_QLQ",
+            authDomain: "example-crud-blog-d4912.firebaseapp.com",
+            databaseURL: "https://example-crud-blog-d4912.firebaseio.com",
+            storageBucket: "",
+        };
+        firebase.initializeApp(config);
+
+        /////////////////////////////////////
+
+
+        /*****************\
+         * เช็คสถานะล็อคอิน *
+        \*****************/
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) { // ถ้าล็อคอินเอาไว้อยู่แล้ว...
+                window.location.href = 'profile.html';
+            }
+        });
+
+        /*******************\
+         * คอนฟิก Login UI *
+        \*******************/
+
+        // FirebaseUI config.
+        var uiConfig = {
+            'signInSuccessUrl': 'profile.html',
+            'signInOptions': [
+              // comments อันที่ไม่ใช้ทิ้งได้เลย
+              firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+              //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+              //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+              //firebase.auth.GithubAuthProvider.PROVIDER_ID,
+              firebase.auth.EmailAuthProvider.PROVIDER_ID
+            ],
+            // Terms of service url.
+            'tosUrl': false,
+        };
+
+        // Initialize the FirebaseUI Widget using Firebase.
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        // The start method will wait until the DOM is loaded.
+        ui.start('#firebaseui-auth-container', uiConfig);
+
+        ////////////////////////////////////////
+    </script>
+
+
+</body>
+
+</html>

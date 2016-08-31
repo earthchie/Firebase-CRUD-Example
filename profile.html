@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firebase - Login</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="container">
+        <br>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">Firebase</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="login.html">หน้าสมาชิก</a></li>
+                        <li><a href="create.html">เขียนบทความใหม่</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <h1>Firebase - Profile</h1>
+
+        <button id="logout" class="btn btn-lg btn-warning">Logout</button>
+        <br>
+        <br>
+
+        <pre id="profile"></pre>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+
+    <script>
+        // แก้ firebase config ตรงนี้
+        var config = {
+            apiKey: "AIzaSyBqxEP00IKEgI163DnTRluzxIHwesx_QLQ",
+            authDomain: "example-crud-blog-d4912.firebaseapp.com",
+            databaseURL: "https://example-crud-blog-d4912.firebaseio.com",
+            storageBucket: "",
+        };
+        firebase.initializeApp(config);
+
+        /////////////////////////////////////
+
+
+        /*****************\
+         * เช็คสถานะล็อคอิน *
+        \*****************/
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+
+                console.log(user);
+                document.getElementById('profile').innerHTML = JSON.stringify(user, null, 2);
+                document.getElementById('logout').onclick = function () {
+                    if (confirm('Logout?')) {
+                        firebase.auth().signOut(); // หลังทำงานเสร็จ มันจะ trigger event onAuthStateChanged อีกครั้งทันที
+                    }
+                };
+            } else {
+                // ถ้ายังไม่ได้ล็อคอิน
+                window.location.href = 'login.html';
+
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>
