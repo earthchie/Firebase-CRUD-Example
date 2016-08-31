@@ -103,9 +103,11 @@
                     if (!added_views) {
                         added_views = true;
                         Entry.transaction(function (entry) {
-                            entry = entry || {}
-                            entry.views = (entry.views || 0) + 1;
-                            return entry;
+                            var data = {views:1}
+                            if(entry){
+                                data.views = (entry.views || 0) + 1;
+                            }
+                            return data;
                         });
                     }
                 } else {
