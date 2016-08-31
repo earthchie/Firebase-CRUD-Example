@@ -1,2 +1,1 @@
-# firebase_crud_example
-Firebase CRUD example
+Live Demo http://earthchie.com/firebase/crud/
