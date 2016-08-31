@@ -11,12 +11,14 @@ Live Demo http://earthchie.com/firebase/crud/
     	".read": true,
     	".write": "auth != null",
         
-        "$child": {
+        "$child":{
             ".read": true,
-            ".write": "newData.hasChildren(['views']) || auth != null"
-        }
+    		".write": "auth != null || (newData.hasChildren(['views']) && !newData.hasChildren(['title']) && !newData.hasChildren(['content']) && !newData.hasChildren(['createdAt']) && !newData.hasChildren(['updatedAt']) && !newData.hasChildren(['author']))",
+      }
+        
     }
       
   }
 }
 ```
+This rule is not perfect, but satisfied the objective of this repository. I'll find the better way to improve these rules soon.
