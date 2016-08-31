@@ -1,6 +1,6 @@
 Live Demo http://earthchie.com/firebase/crud/
 
-## Rules ที่ใช้
+#### Rules
 ```json
 {
   "rules": {
