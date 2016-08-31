@@ -1,18 +1,23 @@
 Live Demo http://earthchie.com/firebase/crud/
 
 ## Rules ที่ใช้
-```
+```json
 {
   "rules": {
     ".read": true,
     ".write": "auth != null",
     
     "Entry":{
-      
     	".read": true,
-    	".write": "newData.hasChildren(['views']) || auth != null"
-      
+    	".write": "auth != null",
+        
+      "$child":{
+        ".read": true,
+    		".write": "newData.hasChildren(['views']) || auth != null",
+      }
+        
     }
+      
   }
 }
 ```
