@@ -11,11 +11,10 @@ Live Demo http://earthchie.com/firebase/crud/
     	".read": true,
     	".write": "auth != null",
         
-      "$child":{
-        ".read": true,
-    		".write": "newData.hasChildren(['views']) || auth != null",
-      }
-        
+        "$child": {
+            ".read": true,
+            ".write": "newData.hasChildren(['views']) || auth != null"
+        }
     }
       
   }
