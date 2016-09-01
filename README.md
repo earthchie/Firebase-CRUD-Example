@@ -32,8 +32,8 @@ Let's break down this line
 ".validate": "data.val() == null || newData.val() == data.val() || newData.val() == data.val()+1"
 ```
 
-``data.val() == null`` = allow to create.
+``data.val() == null`` is allow to create.
 
-``newData.val() == data.val()`` = allow to update with the exact same value.
+``newData.val() == data.val()`` is allow to update with the exact same value.
 
-``newData.val() == data.val()+1`` = allow to increase value by 1.
+``newData.val() == data.val()+1`` is allow to increase value by 1.
