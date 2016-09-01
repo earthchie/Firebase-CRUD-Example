@@ -33,5 +33,7 @@ Let's break down this line
 ```
 
 ``data.val() == null`` = allow to create.
+
 ``newData.val() == data.val()`` = allow to update with the exact same value.
+
 ``newData.val() == data.val()+1`` = allow to increase value by 1.
