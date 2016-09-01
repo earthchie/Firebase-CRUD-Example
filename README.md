@@ -37,3 +37,6 @@ Let's break down this line
 ``newData.val() == data.val()`` is allow to update with the exact same value.
 
 ``newData.val() == data.val()+1`` is allow to increase value by 1.
+
+## License
+WTFPL 2.0 http://www.wtfpl.net/
