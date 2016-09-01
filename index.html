@@ -24,9 +24,15 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <a class="navbar-brand" href="index.html">Firebase</a>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="nav">
                     <ul class="nav navbar-nav">
                         <li><a href="login.html">หน้าสมาชิก</a></li>
                         <li><a href="create.html">เขียนบทความใหม่</a></li>
@@ -38,9 +44,9 @@
         <h1>Firebase - List</h1>
 
         <div id="entries" class="row">
-            
+
         </div>
-        
+
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
@@ -60,48 +66,48 @@
         var Blog = firebase.database().ref('Entry').orderByChild('updatedAt');
 
         Blog.on('value', function (r) {
-            
+
             $('#entries').html('รอสักครู่...');
             var html = '';
-            r.forEach(function(item){
+            r.forEach(function (item) {
                 entry = item.val()
                 html = '<div class="col-md-4">' +
-                            '<a href="entry.html?id=' + item.getKey() + '" style="text-decoration:none!important;">'+
-                                '<div class="panel panel-info">' +
-                                    '<div class="panel-heading">' +
-                                        '<h3 class="panel-title">' + excerpt(entry.title, 140) + '</h3>' +
-                                    '</div>' +
-                                    '<div class="panel-body">'+
-                                        '<small>โดย ' + entry.author + ' | ' + datetimeFormat(entry.updatedAt) + ' | '+entry.views+' views</small>'+
-                                        '<hr><p>' + excerpt(entry.content, 250) + '</p>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</a>'+
-                        '</div>'+html; // prepend เพราะต้องการให้ reverse ลำดับ
+                    '<a href="entry.html?id=' + item.getKey() + '" style="text-decoration:none!important;">' +
+                    '<div class="panel panel-info">' +
+                    '<div class="panel-heading">' +
+                    '<h3 class="panel-title">' + excerpt(entry.title, 140) + '</h3>' +
+                    '</div>' +
+                    '<div class="panel-body">' +
+                    '<small>โดย ' + entry.author + ' | ' + datetimeFormat(entry.updatedAt) + ' | ' + entry.views + ' views</small>' +
+                    '<hr><p>' + excerpt(entry.content, 250) + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '</a>' +
+                    '</div>' + html; // prepend เพราะต้องการให้ reverse ลำดับ
             });
-            
+
             $('#entries').html(html);
         });
-        
+
         /*************\
          * Utilities *
         \*************/
-        
-        function strip(html){
-           var tmp = document.createElement("DIV");
-           tmp.innerHTML = html;
-           return tmp.textContent || tmp.innerText || "";
+
+        function strip(html) {
+            var tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "";
         }
-        
-        function excerpt(text,length){
+
+        function excerpt(text, length) {
             text = strip(text);
-            text = $.trim(text);  //trim whitespace
-            if(text.length > length){
-                text = text.substring(0,length-3)+'...';
+            text = $.trim(text); //trim whitespace
+            if (text.length > length) {
+                text = text.substring(0, length - 3) + '...';
             }
             return text;
         }
-        
+
         function pad2Digit(num) {
             return ('0' + num.toString()).slice(-2);
         }

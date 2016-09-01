@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Firebase - Login</title>
+    <title>Firebase - Entry</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
@@ -24,9 +24,15 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
+                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                     <a class="navbar-brand" href="index.html">Firebase</a>
                 </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse" id="nav">
                     <ul class="nav navbar-nav">
                         <li><a href="login.html">หน้าสมาชิก</a></li>
                         <li><a href="create.html">เขียนบทความใหม่</a></li>
@@ -99,18 +105,19 @@
                     $('[data-bind]').each(function () {
                         $(this).html(entry[$(this).data('bind')]);
                     });
-
+                    
+                    // update title
+                    document.title = 'Firebase - '+entry.content;
+                    
+                    // increase views count. once.
                     if (!added_views) {
                         added_views = true;
-                        Entry.transaction(function (entry) {
-                            var data = {views:1}
-                            if(entry){
-                                data.views = (entry.views || 0) + 1;
-                            }
-                            return data;
+                        Entry.child('views').transaction(function (views) {
+                            return (views || 0) + 1;
                         });
                     }
-                } else {
+                    
+                } else { // content not found
                     window.location.href = 'index.html';
                 }
             });
