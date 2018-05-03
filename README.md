@@ -1,4 +1,6 @@
-Live Demo http://earthchie.com/firebase/crud/
+Live Demo 
+https://earthchie.github.io/Firebase-CRUD-Example/
+http://earthchie.com/firebase/crud/ (Thai language interface)
 
 #### Rules
 ```json
