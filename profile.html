@@ -34,8 +34,8 @@
                 </div>
                 <div class="collapse navbar-collapse" id="nav">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="login.html">หน้าสมาชิก</a></li>
-                        <li><a href="create.html">เขียนบทความใหม่</a></li>
+                        <li class="active"><a href="login.html">Member</a></li>
+                        <li><a href="create.html">New entry</a></li>
                     </ul>
                 </div>
             </div>
@@ -55,7 +55,7 @@
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 
     <script>
-        // แก้ firebase config ตรงนี้
+        // firebase config
         var config = {
             apiKey: "AIzaSyBqxEP00IKEgI163DnTRluzxIHwesx_QLQ",
             authDomain: "example-crud-blog-d4912.firebaseapp.com",
@@ -67,9 +67,9 @@
         /////////////////////////////////////
 
 
-        /*****************\
-         * เช็คสถานะล็อคอิน *
-        \*****************/
+        /**********************\
+         * Check login status *
+        \**********************/
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
@@ -78,11 +78,11 @@
                 document.getElementById('profile').innerHTML = JSON.stringify(user, null, 2);
                 document.getElementById('logout').onclick = function () {
                     if (confirm('Logout?')) {
-                        firebase.auth().signOut(); // หลังทำงานเสร็จ มันจะ trigger event onAuthStateChanged อีกครั้งทันที
+                        firebase.auth().signOut(); // This will trigger onAuthStateChanged again, immediately.
                     }
                 };
             } else {
-                // ถ้ายังไม่ได้ล็อคอิน
+                // if not logged in yet
                 window.location.href = 'login.html';
 
             }
