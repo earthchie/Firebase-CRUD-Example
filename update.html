@@ -34,22 +34,22 @@
                 </div>
                 <div class="collapse navbar-collapse" id="nav">
                     <ul class="nav navbar-nav">
-                        <li><a href="login.html">หน้าสมาชิก</a></li>
-                        <li class="active"><a href="create.html">เขียนบทความใหม่</a></li>
+                        <li><a href="login.html">Member</a></li>
+                        <li class="active"><a href="create.html">New entry</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         
         <form id="update_entry">
-            <h2>หัวเรื่อง</h2>
+            <h2>Title</h2>
             <br>
             <input type="text" name="title" class="form-control col-md-12" required>
             
             <br>
             <br>
             
-            <h2>เนื้อหา</h2>
+            <h2>Content</h2>
             <br>
             <textarea name="content" id="content"></textarea>
             
@@ -57,7 +57,7 @@
             <br>
             
             <div class="text-right">
-                <button class="btn btn-large btn-primary">ปรับปรุงเนื้อหา</button>
+                <button class="btn btn-large btn-primary">Update</button>
             </div>
         </form>
 
@@ -69,7 +69,7 @@
     <script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
     
     <script>
-        // แก้ firebase config ตรงนี้
+        // firebase config
         var config = {
             apiKey: "AIzaSyBqxEP00IKEgI163DnTRluzxIHwesx_QLQ",
             authDomain: "example-crud-blog-d4912.firebaseapp.com",
@@ -81,23 +81,23 @@
         /////////////////////////////////////
 
         
-        /*****************\
-         * เช็คสถานะล็อคอิน *
-        \*****************/
+        /**********************\
+         * check login status *
+        \**********************/
         
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) { 
                 
-                /********************\
-                 * อ่านค่าจาก Firebase *
-                \********************/
+                /*********************************\
+                 * Fetch the entry from Firebase *
+                \*********************************/
                 var entry_id = $_GET('id');
 
                 if (entry_id) {
                     
                     var Entry = firebase.database().ref('Entry').child(entry_id);
 
-                    Entry.once('value', function (r) { // once = เรียกครั้งเดียว ไม่อัพเดต realtime
+                    Entry.once('value', function (r) { // once = just this once, no need to actively watch the changes
                         var entry = r.val();
                         
                         $('#update_entry [name="title"]').val(entry.title);
@@ -107,9 +107,9 @@
                     });
                     
                     
-                    /********************\
-                     * บันทึกค่าจากแบบฟอร์ม *
-                    \********************/
+                    /**********************\
+                     * Save the form data *
+                    \**********************/
                     $('#update_entry').submit(function(e){
                         e.preventDefault();
                         
@@ -138,8 +138,8 @@
                 
                 
             }else{
-                // ถ้ายังไม่ได้ล็อคอิน
-                alert('กรุณาเข้าสู่ระบบก่อน')
+                // if not logged in
+                alert('Please log-in')
                 window.location.href = 'login.html';
                 
             }
