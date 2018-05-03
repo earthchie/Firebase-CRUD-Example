@@ -34,8 +34,8 @@
                 </div>
                 <div class="collapse navbar-collapse" id="nav">
                     <ul class="nav navbar-nav">
-                        <li><a href="login.html">หน้าสมาชิก</a></li>
-                        <li><a href="create.html">เขียนบทความใหม่</a></li>
+                        <li><a href="login.html">Member</a></li>
+                        <li><a href="create.html">New Entry</a></li>
                     </ul>
                 </div>
             </div>
@@ -52,7 +52,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
     <script>
-        // แก้ firebase config ตรงนี้
+        // firebase config
         var config = {
             apiKey: "AIzaSyBqxEP00IKEgI163DnTRluzxIHwesx_QLQ",
             authDomain: "example-crud-blog-d4912.firebaseapp.com",
@@ -67,7 +67,7 @@
 
         Blog.on('value', function (r) {
 
-            $('#entries').html('รอสักครู่...');
+            $('#entries').html('Loading...');
             var html = '';
             r.forEach(function (item) {
                 entry = item.val()
@@ -78,12 +78,12 @@
                     '<h3 class="panel-title">' + excerpt(entry.title, 140) + '</h3>' +
                     '</div>' +
                     '<div class="panel-body">' +
-                    '<small>โดย ' + entry.author + ' | ' + datetimeFormat(entry.updatedAt) + ' | ' + entry.views + ' views</small>' +
+                    '<small>By ' + entry.author + ' | ' + datetimeFormat(entry.updatedAt) + ' | ' + entry.views + ' views</small>' +
                     '<hr><p>' + excerpt(entry.content, 250) + '</p>' +
                     '</div>' +
                     '</div>' +
                     '</a>' +
-                    '</div>' + html; // prepend เพราะต้องการให้ reverse ลำดับ
+                    '</div>' + html; // prepend the entry because we need to display it in reverse order
             });
 
             $('#entries').html(html);
@@ -114,8 +114,8 @@
 
         function datetimeFormat(timestamp) {
             var dateObj = new Date(timestamp);
-            var th_month = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค', 'พ.ย.', 'ธ.ค.'];
-            return dateObj.getDate() + ' ' + th_month[dateObj.getMonth()] + ' ' + pad2Digit(dateObj.getFullYear() + 543) + ' ' + pad2Digit(dateObj.getHours()) + ':' + pad2Digit(dateObj.getMinutes()) + ' น.';
+            var en_month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return dateObj.getDate() + ' ' + en_month[dateObj.getMonth()] + ' ' + pad2Digit(dateObj.getFullYear()) + ' ' + pad2Digit(dateObj.getHours()) + ':' + pad2Digit(dateObj.getMinutes());
         }
     </script>
 
