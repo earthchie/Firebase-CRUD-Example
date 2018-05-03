@@ -34,20 +34,20 @@
                 </div>
                 <div class="collapse navbar-collapse" id="nav">
                     <ul class="nav navbar-nav">
-                        <li><a href="login.html">หน้าสมาชิก</a></li>
-                        <li><a href="create.html">เขียนบทความใหม่</a></li>
+                        <li><a href="login.html">Member</a></li>
+                        <li><a href="create.html">New Entry</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
         <article>
-            <h1 data-bind="title">รอสักครู่...</h1>
+            <h1 data-bind="title">Loading...</h1>
 
             <small>
-                โดย <span data-bind="author"></span> | 
-                ปรับปรุงเนื้อหาล่าสุด <span data-bind="updatedAt-formatted"></span> | 
-                เข้าชมแล้ว <span data-bind="views">0</span> ครั้ง 
+                By <span data-bind="author"></span> | 
+                Updated at <span data-bind="updatedAt-formatted"></span> | 
+                <span data-bind="views">0</span> Views
             </small>
 
             <hr>
@@ -56,12 +56,12 @@
             
             <hr>
             <div class="text-right">
-                <button id="delete" class="btn btn-lg btn-danger">ลบทิ้ง</button>
+                <button id="delete" class="btn btn-lg btn-danger">Delete</button>
                 &nbsp;
                 &nbsp;
                 &nbsp;
                 &nbsp;
-                <a href="" id="update" class="btn btn-lg btn-primary">แก้ไข</a>
+                <a href="" id="update" class="btn btn-lg btn-primary">Update</a>
             </div>
 
         </article>
@@ -74,7 +74,7 @@
     <script src="//cdn.ckeditor.com/4.5.10/standard/ckeditor.js"></script>
 
     <script>
-        // แก้ firebase config ตรงนี้
+        // firebase config
         var config = {
             apiKey: "AIzaSyBqxEP00IKEgI163DnTRluzxIHwesx_QLQ",
             authDomain: "example-crud-blog-d4912.firebaseapp.com",
@@ -85,9 +85,9 @@
 
         /////////////////////////////////////
 
-        /****************\
-         * ดึงเนื้อหามาแสดง *
-        \****************/
+        /*********************************\
+         * Fetch and display the entry *
+        \*********************************/
 
         var entry_id = $_GET('id');
 
@@ -122,17 +122,17 @@
                 }
             });
             
-            // ปุ่มแก้ไข
+            // update button
             $('#update').attr('href','update.html?id='+entry_id);
             
-            // ปุ่มลบ
+            // delete button
             $('#delete').click(function(){
-                if(confirm('ยืนยันที่จะลบ?')){
-                    Entry.remove(); // ลบเสร็จจะ trigger Entry.on('value') ทันที
+                if(confirm('This entry will be permanently delete. Are you sure?')){
+                    Entry.remove(); // this will trigger Entry.on('value') immediatly
                 }
             });
         } else {
-            alert('ไม่พบ entry id');
+            alert('This entry id does not exist');
             window.location.href = 'index.html';
         }
 
@@ -162,8 +162,8 @@
 
         function datetimeFormat(timestamp) {
             var dateObj = new Date(timestamp);
-            var th_month = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค', 'พ.ย.', 'ธ.ค.'];
-            return dateObj.getDate() + ' ' + th_month[dateObj.getMonth()] + ' ' + pad2Digit(dateObj.getFullYear() + 543) + ' ' + pad2Digit(dateObj.getHours()) + ':' + pad2Digit(dateObj.getMinutes()) + ' น.';
+            var en_month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return dateObj.getDate() + ' ' + en_month[dateObj.getMonth()] + ' ' + pad2Digit(dateObj.getFullYear()) + ' ' + pad2Digit(dateObj.getHours()) + ':' + pad2Digit(dateObj.getMinutes());
         }
     </script>
 
